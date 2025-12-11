@@ -1,5 +1,6 @@
 package com.example.test_lab_week_13
 
+import android.util.Log
 import com.example.test_lab_week_13.api.MovieService
 import com.example.test_lab_week_13.database.MovieDao
 import com.example.test_lab_week_13.database.MovieDatabase
@@ -17,15 +18,24 @@ class MovieRepository(
 
     fun fetchMovies(): Flow<List<Movie>> {
         return flow {
+            // Check if there are movies saved in the database
             val movieDao: MovieDao = movieDatabase.movieDao()
             val savedMovies = movieDao.getMovies()
-            if(savedMovies.isEmpty()) {
+
+            if (savedMovies.isEmpty()) {
+                // Fetch movies from API
                 val movies = movieService.getPopularMovies(apiKey).results
+
+                // Save fetched movies to Room DB
                 movieDao.addMovies(movies)
+
+                // Emit fresh data from API
                 emit(movies)
             } else {
+                // Emit saved data from Room DB
                 emit(savedMovies)
             }
         }.flowOn(Dispatchers.IO)
     }
+
 }

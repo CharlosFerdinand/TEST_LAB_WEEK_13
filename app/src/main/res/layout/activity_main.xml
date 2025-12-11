@@ -21,8 +21,6 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
             app:list="@{viewModel.popularMovies}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/view_movie_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
